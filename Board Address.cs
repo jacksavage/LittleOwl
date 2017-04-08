@@ -36,7 +36,18 @@ namespace LittleOwl {
 
         public BoardAddress(int i) { Index = i; } // todo is this bad form? (two constructors with single numeric args)
 
-        public BoardAddress(char f, int r) {
+        public BoardAddress(char f, int r) { Position = PositionFromFileRank(f, r); }
+
+        public BoardAddress(string fileRank) {
+            fileRank = fileRank.Trim();
+            if (fileRank.Length != 2) throw new ArgumentException(string.Format("board address \"{0}\" is two characters", fileRank));
+            int R;
+            if (!int.TryParse(fileRank[1].ToString(), out R)) throw new ArgumentException(string.Format("could not parse rank \"{0}\"", fileRank[1]));
+
+            Position = PositionFromFileRank(fileRank[0], R);
+        }
+
+        private ulong PositionFromFileRank(char f, int r) {
             f = char.ToLower(f);
             if (f < 'a' || f > 'h') throw new ArgumentException(string.Format("invalid file \"{0}\"", f));
             if (r < 1 || r > 8) throw new ArgumentException(string.Format("invalid rank \"{0}\"", r));
@@ -44,7 +55,7 @@ namespace LittleOwl {
             ulong FileIndex = (ulong)(f - 'a');
             ulong RankIndex = (ulong)r;
 
-            Position = FileIndex + (RankIndex * 8);
+            return FileIndex + (RankIndex * 8);
         }
 
         public override string ToString() { return string.Format("{0}{1}", File, Rank); }
