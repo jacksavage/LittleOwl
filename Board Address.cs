@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace LittleOwl {
     public class BoardAddress {
@@ -10,7 +9,8 @@ namespace LittleOwl {
         public ulong Position {
             get { return _Position; }
             set {
-
+                if (Utilities.NumActiveBits(value) != 1) throw new ArgumentException(string.Format("num of active bits in \"{0}\" is not equal to one", value));
+                _Position = value;
             }
         }
 
