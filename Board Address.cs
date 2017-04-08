@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LittleOwl {
     public class BoardAddress {
-        public char File { get { return (char)('a' + (int)(Position / 8)); } }
+        public char File { get { return (char)('a' + (Index / 8)); } }
         public int Rank { get; }
 
         private static ulong[] PositionLookup;
