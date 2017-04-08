@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace LittleOwl {
-    public class BoardAddress {
+    public struct BoardAddress {
         public char File { get { return (char)('a' + (Index / 8)); } }
         public int Rank { get { return Index % 8; } }
 
@@ -32,11 +32,7 @@ namespace LittleOwl {
             }
         }
 
-        public BoardAddress(ulong pos) { Position = pos; }
-
-        public BoardAddress(int i) { Index = i; } // todo is this bad form? (two constructors with single numeric args)
-
-        public BoardAddress(char f, int r) {
+        public void SetFileRank(char f, int r) {
             f = char.ToLower(f);
             if (f < 'a' || f > 'h') throw new ArgumentException(string.Format("invalid file \"{0}\"", f));
             if (r < 1 || r > 8) throw new ArgumentException(string.Format("invalid rank \"{0}\"", r));
