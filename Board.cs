@@ -74,47 +74,58 @@ namespace LittleOwl {
                 // add proper delimiter
                 if (rank != 7) Result.Append("/");
                 else Result.Append(" ");
-
-                // who is at move?
-                if (ActiveColorWhite) // white
-                    Result.Append("w ");
-                else // black
-                    Result.Append("b ");
-
-                // who can castle?
-                if (CastlingAvailability.White == Castling.Move.Disallowed && CastlingAvailability.Black == Castling.Move.Disallowed) { // nobody!
-                    Result.Append("- ");
-                } else { // someone can
-                    // can white?
-                    switch (CastlingAvailability.White) {
-                        case Castling.Move.BothSides:
-                            Result.Append("KQ");
-                            break;
-                        case Castling.Move.QueenSide:
-                            Result.Append("Q");
-                            break;
-                        case Castling.Move.KingSide:
-                            Result.Append("K");
-                            break;
-                    }
-
-                    // can black?
-                    switch (CastlingAvailability.Black) {
-                        case Castling.Move.BothSides:
-                            Result.Append("kq");
-                            break;
-                        case Castling.Move.QueenSide:
-                            Result.Append("q");
-                            break;
-                        case Castling.Move.KingSide:
-                            Result.Append("k");
-                            break;
-                    }
-                }
-
-
             }
 
+            // who is at move?
+            if (ActiveColorWhite) // white
+                Result.Append("w ");
+            else // black
+                Result.Append("b ");
+
+            // who can castle?
+            if (CastlingAvailability.White == Castling.Move.Disallowed && CastlingAvailability.Black == Castling.Move.Disallowed) { // nobody!
+                Result.Append("- ");
+            } else { // someone can
+                   // can white?
+                switch (CastlingAvailability.White) {
+                    case Castling.Move.BothSides:
+                        Result.Append("KQ");
+                        break;
+                    case Castling.Move.QueenSide:
+                        Result.Append("Q");
+                        break;
+                    case Castling.Move.KingSide:
+                        Result.Append("K");
+                        break;
+                }
+
+                // can black?
+                switch (CastlingAvailability.Black) {
+                    case Castling.Move.BothSides:
+                        Result.Append("kq");
+                        break;
+                    case Castling.Move.QueenSide:
+                        Result.Append("q");
+                        break;
+                    case Castling.Move.KingSide:
+                        Result.Append("k");
+                        break;
+                }
+            }
+
+            // is there an enpassant move possible?
+            if (EnPassantTarget == null) // no
+                Result.Append("- ");
+            else // yes
+                Result.Append(EnPassantTarget);
+
+            // add the halfmove clock
+            Result.AppendFormat("{0} ", HalfMoveClock);
+
+            // add the move number
+            Result.Append(FullMoveNumber);
+
+            // and wallah, here is a FEN string
             return Result.ToString();
         }
 
@@ -123,7 +134,7 @@ namespace LittleOwl {
 
         internal PiecePositions Pieces;
         internal bool ActiveColorWhite;
-        internal ulong EnPassantTarget;
+        internal BoardAddress EnPassantTarget;
         internal Castling CastlingAvailability;
         internal byte HalfMoveClock;
         internal int FullMoveNumber;
