@@ -52,10 +52,9 @@ namespace LittleOwl {
             if (f < 'a' || f > 'h') throw new ArgumentException(string.Format("invalid file \"{0}\"", f));
             if (r < 1 || r > 8) throw new ArgumentException(string.Format("invalid rank \"{0}\"", r));
 
-            ulong FileIndex = (ulong)(f - 'a');
-            ulong RankIndex = (ulong)r;
-
-            return FileIndex + (RankIndex * 8);
+            int FileIndex = f - 'a';
+            int BoardIndex = FileIndex + (r * 8);
+            return PositionLookup[BoardIndex];
         }
 
         public override string ToString() { return string.Format("{0}{1}", File, Rank); }
