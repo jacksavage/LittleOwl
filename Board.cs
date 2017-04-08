@@ -26,8 +26,13 @@ namespace LittleOwl {
         internal PiecePositions Pieces;
         internal bool ActiveColorWhite;
         internal ulong EnPassantTarget;
-        // todo internal CastlingAvailability;
+        internal Castling CastlingAvailability;
         internal byte HalfMoveClock;
         internal int FullMoveNumber;
+
+        public struct Castling {
+            public Move White, Black;
+            public enum Move : byte { Disallowed, QueenSide, KingSide, BothSides }
+        }
     }
 }
