@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace LittleOwl {
+    // chess move representation
     internal struct Move {
         public BoardAddress From;
         public BoardAddress To;
