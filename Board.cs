@@ -12,8 +12,59 @@ namespace LittleOwl {
             
             // piece placement
             string Field = Match.Groups[1].Value.ToLower();
-            foreach (char c in Field) {
+            string[] RankPlacement = Field.Split('/');
+            BoardAddress Location;
+            int File;
+            for (int rank = 0; rank < 8; rank++) {
+                File = 0;
+                foreach (char c in RankPlacement[rank]) {
+                    Location = new BoardAddress((char)('a' + File), rank);
 
+                    switch (c) {
+                        case 'p':
+                            Pieces.Black.Pawns |= Location.Position;
+                            break;
+                        case 'P':
+                            Pieces.White.Pawns |= Location.Position;
+                            break;
+                        case 'n':
+                            Pieces.Black.Knights |= Location.Position;
+                            break;
+                        case 'N':
+                            Pieces.White.Knights |= Location.Position;
+                            break;
+                        case 'b':
+                            Pieces.Black.Bishops |= Location.Position;
+                            break;
+                        case 'B':
+                            Pieces.White.Bishops |= Location.Position;
+                            break;
+                        case 'r':
+                            Pieces.Black.Rooks |= Location.Position;
+                            break;
+                        case 'R':
+                            Pieces.White.Rooks |= Location.Position;
+                            break;
+                        case 'q':
+                            Pieces.Black.Queens |= Location.Position;
+                            break;
+                        case 'Q':
+                            Pieces.White.Queens |= Location.Position;
+                            break;
+                        case 'k':
+                            Pieces.Black.King |= Location.Position;
+                            break;
+                        case 'K':
+                            Pieces.White.King |= Location.Position;
+                            break;
+                        default: // num empty spaces
+                            if (!char.IsDigit(c)) throw new ArgumentException(string.Format("invalid character \"{0}\" in piece placement field", c));
+                            File += c - '0'; // convert char to int
+                            break;
+                    }
+
+                    File++;
+                }
             }
 
             // active color
