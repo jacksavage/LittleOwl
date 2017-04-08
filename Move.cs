@@ -53,6 +53,22 @@ namespace LittleOwl {
                 }
             }
         }
+
+        // create an ACN string from the calling move
+        public override string ToString() {
+            switch (MoveType) {
+                case PieceMoveType.PawnKnight:
+                    return string.Format("{0}{1}{2}", From, To, 'n');
+                case PieceMoveType.PawnBishop:
+                    return string.Format("{0}{1}{2}", From, To, 'b');
+                case PieceMoveType.PawnRook:
+                    return string.Format("{0}{1}{2}", From, To, 'k');
+                case PieceMoveType.PawnQueen:
+                    return string.Format("{0}{1}{2}", From, To, 'q');
+                default:
+                    return string.Format("{0}{1}", From, To);
+            }
+        }
     }
 
     internal enum PieceMoveType : int {
