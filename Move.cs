@@ -76,6 +76,16 @@ namespace LittleOwl {
             // todo implement Move constructor using a Board diff
             throw new NotImplementedException();
         }
+
+        public static bool operator ==(Move left, Move right) {
+            if (((object)left) == null && ((object)right) == null) return true;
+            if (((object)left) == null || ((object)right) == null) return false;
+            if ((left.From != right.From) || (left.To != right.To)) return false;
+            if (left.MoveType != right.MoveType) return false;
+            return true;
+        }
+
+        public static bool operator !=(Move left, Move right) { return !(left == right); }
     }
 
     internal enum PieceMoveType : byte {
