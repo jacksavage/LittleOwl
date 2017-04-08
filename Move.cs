@@ -70,6 +70,12 @@ namespace LittleOwl {
                     return string.Format("{0}{1}", From, To);
             }
         }
+
+        // create a move by doing a diff of two boards
+        public Move(Board from, Board to) {
+            // todo implement Move constructor using a Board diff
+            throw new NotImplementedException();
+        }
     }
 
     internal enum PieceMoveType : byte {
