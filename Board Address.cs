@@ -28,16 +28,5 @@ namespace LittleOwl {
         }
 
         public override string ToString() { return string.Format("{0}{1}", File, Rank); }
-
-        public static bool operator ==(BoardAddress left, BoardAddress right) {
-            if (((object)left) == null && ((object)right) == null) return true; // both null
-            if (((object)left) == null || ((object)right) == null) return false; // one null
-            if (left.Position == right.Position) return true;
-            return false;
-        }
-
-        public static bool operator !=(BoardAddress left, BoardAddress right) { return !(left == right); }
-
-
     }
 }
