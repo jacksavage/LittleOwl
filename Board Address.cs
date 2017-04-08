@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace LittleOwl {
     public class BoardAddress {
         public char File { get { return (char)('a' + (Index / 8)); } }
-        public int Rank { get; }
+        public int Rank { get { return Index % 8; } }
 
         private static ulong[] PositionLookup;
         private static Dictionary<ulong, int> IndexLookup;
