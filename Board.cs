@@ -6,7 +6,7 @@ namespace LittleOwl {
     // fully represents a state in a chess game
     public class Board {
         // create a board with a FEN string
-        public Board(string fen) {
+        internal Board(string fen) {
             Match Match = FenParser.Match(fen);
             if (!Match.Success) throw new ArgumentException(string.Format("invalid FEN string \"{0}\"", fen));
             string[] Fields = {Match.Groups[1].Value, Match.Groups[2].Value, Match.Groups[3].Value, Match.Groups[4].Value, Match.Groups[5].Value, Match.Groups[6].Value};
@@ -128,7 +128,7 @@ namespace LittleOwl {
         internal byte HalfMoveClock;
         internal int FullMoveNumber;
 
-        public struct Castling {
+        internal struct Castling {
             public Move White, Black;
             public enum Move : byte { Disallowed, QueenSide, KingSide, BothSides }
         }
