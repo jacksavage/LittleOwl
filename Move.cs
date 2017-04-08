@@ -72,7 +72,7 @@ namespace LittleOwl {
         }
     }
 
-    internal enum PieceMoveType : int {
+    internal enum PieceMoveType : byte {
         Pawn = 0,
         Knight = 1,
         Bishop = 2,
