@@ -58,5 +58,20 @@ namespace LittleOwl {
                 }
             }
         }
+
+        // get the result 'b' raised to the power of 'e'
+        // not checking for overflows
+        public static ulong Pow(int b, uint e) {
+            ulong Result = 1;
+
+            while (e != 0) {
+                if ((e & 1) != 0)
+                    Result *= (ulong)b;
+                e >>= 1;
+                b *= b;
+            }
+
+            return Result;
+        }
     }
 }
