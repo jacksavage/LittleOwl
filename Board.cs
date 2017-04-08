@@ -9,8 +9,49 @@ namespace LittleOwl {
         internal Board(string fen) {
             Match Match = FenParser.Match(fen);
             if (!Match.Success) throw new ArgumentException(string.Format("invalid FEN string \"{0}\"", fen));
-            string[] Fields = {Match.Groups[1].Value, Match.Groups[2].Value, Match.Groups[3].Value, Match.Groups[4].Value, Match.Groups[5].Value, Match.Groups[6].Value};
+            
+            // piece placement
+            string Field = Match.Groups[1].Value.ToLower();
+            foreach (char c in Field) {
 
+            }
+
+            // active color
+            Field = Match.Groups[2].Value.ToLower();
+            if (Field == "w") ActiveColorWhite = true;
+            else ActiveColorWhite = false;
+
+            // castling availablity
+            Field = Match.Groups[3].Value;
+            if (Field == "-") { // not available
+                CastlingAvailability.White = Castling.Move.Disallowed;
+                CastlingAvailability.Black = Castling.Move.Disallowed;
+            } else { // available to at least one player
+                // check white
+                if (Field.Contains("K") && Field.Contains("Q")) CastlingAvailability.White = Castling.Move.BothSides;
+                else if (Field.Contains("K")) CastlingAvailability.White = Castling.Move.KingSide;
+                else if (Field.Contains("Q")) CastlingAvailability.White = Castling.Move.QueenSide;
+                else CastlingAvailability.White = Castling.Move.Disallowed;
+
+                // check black
+                if (Field.Contains("k") && Field.Contains("q")) CastlingAvailability.Black = Castling.Move.BothSides;
+                else if (Field.Contains("k")) CastlingAvailability.Black = Castling.Move.KingSide;
+                else if (Field.Contains("q")) CastlingAvailability.Black = Castling.Move.QueenSide;
+                else CastlingAvailability.Black = Castling.Move.Disallowed;
+            }
+
+            // enpassant location
+            Field = Match.Groups[4].Value;
+            if (Field == "-") EnPassantTarget = null;
+            else EnPassantTarget = new BoardAddress(Field);
+
+            // halfmove clock
+            Field = Match.Groups[5].Value;
+            if (!byte.TryParse(Field, out HalfMoveClock)) throw new ArgumentException(string.Format("could not parse halfmove clock \"{0}\"", Field));
+
+            // halfmove clock
+            Field = Match.Groups[6].Value;
+            if (!int.TryParse(Field, out FullMoveNumber)) throw new ArgumentException(string.Format("could not parse full move number \"{0}\"", Field));
         }
 
         // create a FEN string from the calling board
@@ -129,7 +170,7 @@ namespace LittleOwl {
             return Result.ToString();
         }
 
-        private const string FenPattern = @"(?i)^\s*([pnbrkq1-8\/]{17,})\s+([wb])\s+([kq\-]{4})\s+((?:[a-h][1-8])|\-)\s+(\d{1,2})\s+(\d+)\s*$";
+        private const string FenPattern = @"(?i)^\s*([pnbrkq1-8\/]{17,})\s+([wb])\s+([kq\-]{1,4})\s+((?:[a-h][1-8])|\-)\s+(\d{1,2})\s+(\d+)\s*$";
         private static Regex FenParser = new Regex(FenPattern);
 
         internal PiecePositions Pieces;
