@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace LittleOwl {
-    public class BoardAddress {
+    internal class BoardAddress {
         public char File { get { return (char)('a' + (Index / 8)); } }
         public int Rank { get { return Index % 8; } }
 
@@ -34,7 +34,7 @@ namespace LittleOwl {
 
         public BoardAddress(ulong pos) { Position = pos; }
 
-        public BoardAddress(int i) { Index = i; } // todo is this bad form? (two constructors with single numeric args)
+        public BoardAddress(int i) { Index = i; } // todo is this bad form?
 
         public BoardAddress(char f, int r) { Position = PositionFromFileRank(f, r); }
 

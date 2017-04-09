@@ -4,9 +4,9 @@ using System;
 
 namespace LittleOwl {
     // fully represents a state in a chess game
-    public class Board {
+    internal class Board {
         // create a board with a FEN string
-        internal Board(string fen) {
+        public Board(string fen) {
             Match Match = FenParser.Match(fen);
             if (!Match.Success) throw new ArgumentException(string.Format("invalid FEN string \"{0}\"", fen));
             
@@ -224,14 +224,14 @@ namespace LittleOwl {
         private const string FenPattern = @"(?i)^\s*([pnbrkq1-8\/]{17,})\s+([wb])\s+([kq\-]{1,4})\s+((?:[a-h][1-8])|\-)\s+(\d{1,2})\s+(\d+)\s*$";
         private static Regex FenParser = new Regex(FenPattern);
 
-        internal PiecePositions Pieces;
-        internal bool ActiveColorWhite;
-        internal BoardAddress EnPassantTarget;
-        internal Castling CastlingAvailability;
-        internal byte HalfMoveClock;
-        internal int FullMoveNumber;
+        public PiecePositions Pieces;
+        public bool ActiveColorWhite;
+        public BoardAddress EnPassantTarget;
+        public Castling CastlingAvailability;
+        public byte HalfMoveClock;
+        public int FullMoveNumber;
 
-        internal struct Castling {
+        public struct Castling {
             public Move White, Black;
             public enum Move : byte { Disallowed, QueenSide, KingSide, BothSides }
         }

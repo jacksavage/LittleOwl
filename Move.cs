@@ -13,7 +13,7 @@ namespace LittleOwl {
             MoveType = m;
         }
 
-        // create a move from ACN (algebraic chess notation) string and the Piece positioning bitboards
+        // create a move from ACN string and the piece positions
         public Move(string acn, PiecePositions pieces) {
             int Len = acn.Length;
             if (Len < 4 || Len > 5) throw new ArgumentException(string.Format("ACN strings must be 4 or 5 characters long: \"{0}\"", acn));
