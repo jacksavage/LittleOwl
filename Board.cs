@@ -105,6 +105,16 @@ namespace LittleOwl {
             if (!int.TryParse(Field, out FullMoveNumber)) throw new ArgumentException(string.Format("could not parse full move number \"{0}\"", Field));
         }
 
+        // deep copy constructor
+        public Board(Board source) {
+            Pieces = new PiecePositions(source.Pieces);
+            ActiveColorWhite = source.ActiveColorWhite;
+            EnPassantTarget = new BoardAddress(source.EnPassantTarget.Position);
+            CastlingAvailability = new Castling(source.CastlingAvailability);
+            HalfMoveClock = source.HalfMoveClock;
+            FullMoveNumber = source.FullMoveNumber;
+        }
+
         // create a FEN string from the calling board
         public override string ToString() {
             var Result = new StringBuilder();
@@ -231,9 +241,16 @@ namespace LittleOwl {
         public byte HalfMoveClock;
         public int FullMoveNumber;
 
-        public struct Castling {
+        public class Castling {
             public Move White, Black;
+
             public enum Move : byte { Disallowed, QueenSide, KingSide, BothSides }
+
+            // deep copy constructor
+            public Castling(Castling source) {
+                White = source.White;
+                Black = source.Black;
+            }
         }
     }
 }
