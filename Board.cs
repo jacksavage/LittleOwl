@@ -105,15 +105,8 @@ namespace LittleOwl {
             if (!int.TryParse(Field, out FullMoveNumber)) throw new ArgumentException(string.Format("could not parse full move number \"{0}\"", Field));
         }
 
-        // deep copy constructor
-        public Board(Board source) {
-            Pieces = new PiecePositions(source.Pieces);
-            ActiveColorWhite = source.ActiveColorWhite;
-            EnPassantTarget = new BoardAddress(source.EnPassantTarget.Position);
-            CastlingAvailability = new Castling(source.CastlingAvailability);
-            HalfMoveClock = source.HalfMoveClock;
-            FullMoveNumber = source.FullMoveNumber;
-        }
+        // explicit empty constructor
+        public Board() {}
 
         // create a FEN string from the calling board
         public override string ToString() {
