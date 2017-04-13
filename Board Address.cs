@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace LittleOwl {
     internal class BoardAddress {
-        public char File { get { return (char)('a' + (Index / 8)); } }
-        public int Rank { get { return Index % 8; } }
+        public int File { get { return Index % 8; } } // zero based
+        public int Rank { get { return Index / 8; } } // zero based
 
         private static ulong[] PositionLookup;
         private static Dictionary<ulong, int> IndexLookup;
@@ -57,6 +57,6 @@ namespace LittleOwl {
             return PositionLookup[BoardIndex];
         }
 
-        public override string ToString() { return string.Format("{0}{1}", File, Rank); }
+        public override string ToString() { return string.Format("{0}{1}", File + 'a', Rank + 1); }
     }
 }
