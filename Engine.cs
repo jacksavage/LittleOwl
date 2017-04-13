@@ -71,7 +71,7 @@ namespace LittleOwl {
             // update castling availability
             
             // update full move counter
-            if (!board.ActiveColorWhite) Result.FullMoveNumber++; // update on black move
+            if (!board.ActiveColorWhite) Result.FullMoveNumber++; // update on black player's move
 
             // switch the active player
             Result.ActiveColorWhite = !board.ActiveColorWhite;
