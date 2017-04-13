@@ -90,14 +90,14 @@ namespace LittleOwl {
 
     internal enum PieceMoveType : byte {
         Pawn = 0,
-        Knight = 1,
-        Bishop = 2,
-        Rook = 3,
-        Queen = 4,
-        King = 5,
-        PawnKnight = 6,
-        PawnBishop = 7,
-        PawnRook = 8,
-        PawnQueen = 9
+        PawnKnight = 1,
+        PawnBishop = 2,
+        PawnRook = 3,
+        PawnQueen = 4,
+        Knight = 5,
+        Bishop = 6,
+        Rook = 7,
+        Queen = 8,
+        King = 9
     }
 }
