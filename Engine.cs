@@ -68,7 +68,7 @@ namespace LittleOwl {
                     Result.EnPassantTarget = new BoardAddress(move.From.Position - 8);
             }
 
-            // update castling availability
+            // todo update castling availability
             
             // update full move counter
             if (!board.ActiveColorWhite) Result.FullMoveNumber++; // update on black player's move
@@ -76,6 +76,40 @@ namespace LittleOwl {
             // switch the active player
             Result.ActiveColorWhite = !board.ActiveColorWhite;
 
+            return Result;
+        }
+
+        // create a move by doing a diff of two boards
+        private Move BoardDiff(Board before, Board after) {
+            var Result = new Move();
+
+            // setup handles for the active player
+            PiecePositions.Player ActivePiecesBefore, ActivePiecesAfter;
+            if (before.ActiveColorWhite) {
+                ActivePiecesBefore = before.Pieces.White;
+                ActivePiecesAfter = after.Pieces.White;
+            } else {
+                ActivePiecesBefore = before.Pieces.Black;
+                ActivePiecesAfter = after.Pieces.Black;
+            }
+
+            // get the starting position of the moving piece
+            ulong Position = ActivePiecesBefore.All & ~ActivePiecesAfter.All;
+            int NumPositions = Utilities.NumActiveBits(Position);
+            if (NumPositions == 0) throw new ArgumentException("none of the active player's pieces moved");
+
+            // could this be a castling move?
+            if (NumPositions > 1) { // yes
+                // get the king
+                Position &= ActivePiecesBefore.King;
+                if (Position == 0) throw new ArgumentException("active player moved more than one piece on a non-castling move");
+            }
+
+            Result.From = new BoardAddress(Position);
+
+            // get the ending position of the moving piece
+
+            throw new NotImplementedException();
             return Result;
         }
     }

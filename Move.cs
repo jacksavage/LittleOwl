@@ -81,12 +81,6 @@ namespace LittleOwl {
             }
         }
 
-        // create a move by doing a diff of two boards
-        public Move(Board from, Board to) {
-            // todo implement Move constructor using a Board diff
-            throw new NotImplementedException();
-        }
-
         public static bool operator ==(Move left, Move right) {
             if (((object)left) == null && ((object)right) == null) return true;
             if (((object)left) == null || ((object)right) == null) return false;
