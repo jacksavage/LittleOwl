@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Text;
 using System;
+using System.Collections.Generic;
 
 namespace LittleOwl {
     // fully represents a state in a chess game
@@ -103,6 +104,9 @@ namespace LittleOwl {
             // halfmove clock
             Field = Match.Groups[6].Value;
             if (!int.TryParse(Field, out FullMoveNumber)) throw new ArgumentException(string.Format("could not parse full move number \"{0}\"", Field));
+
+            // past move tracker
+            PastMoves = new Queue<Move>();
         }
 
         // explicit empty constructor
@@ -233,6 +237,7 @@ namespace LittleOwl {
         public Castling CastlingAvailability;
         public byte HalfMoveClock;
         public int FullMoveNumber;
+        public Queue<Move> PastMoves;
 
         public class Castling {
             public Move White, Black;
