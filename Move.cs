@@ -63,9 +63,19 @@ namespace LittleOwl {
                 case PieceMoveType.PawnBishop:
                     return string.Format("{0}{1}{2}", From, To, 'b');
                 case PieceMoveType.PawnRook:
-                    return string.Format("{0}{1}{2}", From, To, 'k');
+                    return string.Format("{0}{1}{2}", From, To, 'r');
                 case PieceMoveType.PawnQueen:
                     return string.Format("{0}{1}{2}", From, To, 'q');
+                case PieceMoveType.Knight:
+                    return string.Format("{0}{1}{2}", 'n', From, To);
+                case PieceMoveType.Bishop:
+                    return string.Format("{0}{1}{2}", 'b', From, To);
+                case PieceMoveType.Rook:
+                    return string.Format("{0}{1}{2}", 'r', From, To);
+                case PieceMoveType.Queen:
+                    return string.Format("{0}{1}{2}", 'q', From, To);
+                case PieceMoveType.King:
+                    return string.Format("{0}{1}{2}", 'k', From, To);
                 default:
                     return string.Format("{0}{1}", From, To);
             }
