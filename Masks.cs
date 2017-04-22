@@ -1,7 +1,41 @@
 ﻿namespace LittleOwl {
     internal static class Masks {
         static Masks() {
-            // todo setup masks
+            Slash = new ulong[16];
+            Slash[0] = 0x8040201008040201;
+            Slash[1] = 0x4020100804020100;
+            Slash[2] = 0x2010080402010000;
+            Slash[3] = 0x1008040201000000;
+            Slash[4] = 0x0804020100000000;
+            Slash[5] = 0x0402010000000000;
+            Slash[6] = 0x0201000000000000;
+            Slash[7] = 0x0100000000000000;
+            Slash[8] = 0x0; // not applicable
+            Slash[9] = 0x0000000000000080;
+            Slash[10] = 0x0000000000008040;
+            Slash[11] = 0x0000000000804020;
+            Slash[12] = 0x0000000080402010;
+            Slash[13] = 0x0000008040201008;
+            Slash[14] = 0x0000804020100804;
+            Slash[15] = 0x0080402010080402;
+
+            BackSlash = new ulong[16];
+            BackSlash[0] = 0x0102040810204080;
+            BackSlash[1] = 0x0001020408102040;
+            BackSlash[2] = 0x0000010204081020;
+            BackSlash[3] = 0x0000000102040810;
+            BackSlash[4] = 0x0000000001020408;
+            BackSlash[5] = 0x0000000000010204;
+            BackSlash[6] = 0x0000000000000102;
+            BackSlash[7] = 0x0000000000000001;
+            BackSlash[8] = 0x0; // not applicable
+            BackSlash[9] = 0x8000000000000000;
+            BackSlash[10] = 0x4080000000000000;
+            BackSlash[11] = 0x2040800000000000;
+            BackSlash[12] = 0x1020408000000000;
+            BackSlash[13] = 0x0810204080000000;
+            BackSlash[14] = 0x0408102040800000;
+            BackSlash[15] = 0x0204081020408000;
         }
 
         // file constants
@@ -23,6 +57,10 @@
         public const ulong Rank6 = 0x0000ff0000000000;
         public const ulong Rank7 = 0x00ff000000000000;
         public const ulong Rank8 = 0xff00000000000000;
+
+        // diagonal lookups
+        public static readonly ulong[] Slash;
+        public static readonly ulong[] BackSlash;
 
         // rank and file lookups
         public static readonly ulong[] Ranks = { Rank1, Rank2, Rank3, Rank4, Rank5, Rank6, Rank7, Rank8 };
