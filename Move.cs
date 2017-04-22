@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace LittleOwl {
+    using System;
 
-namespace LittleOwl {
     // chess move representation
     internal struct Move {
         public BoardAddress From;
@@ -76,8 +76,12 @@ namespace LittleOwl {
                     return string.Format("{0}{1}{2}", 'q', From, To);
                 case PieceMoveType.King:
                     return string.Format("{0}{1}{2}", 'k', From, To);
+                case PieceMoveType.KingKingside:
+                    return "0-0";
+                case PieceMoveType.KingQueenside:
+                    return "0-0-0";
                 default:
-                    return string.Format("{0}{1}", From, To);
+                    return string.Format("{0}{1}", From, To); // standard pawn move
             }
         }
 
@@ -94,14 +98,16 @@ namespace LittleOwl {
 
     internal enum PieceMoveType : byte {
         Pawn = 0,
-        PawnKnight = 1,
-        PawnBishop = 2,
-        PawnRook = 3,
-        PawnQueen = 4,
+        PawnKnight = 1, // promo
+        PawnBishop = 2, // promo
+        PawnRook = 3, // promo
+        PawnQueen = 4, // promo
         Knight = 5,
         Bishop = 6,
         Rook = 7,
         Queen = 8,
-        King = 9
+        King = 9,
+        KingQueenside = 10, // castle
+        KingKingside = 11 // castle
     }
 }
