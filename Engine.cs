@@ -1,6 +1,7 @@
 ﻿namespace LittleOwl {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class Engine {
         // read a board state and select a suitable move to return
@@ -153,27 +154,137 @@
             else return (board.Pieces.Black.Rooks & Masks.BlackKingSideRookInitPos) != 0;
         }
 
-        // todo create a move by doing a diff of two boards
+        // create a move from a diff of two boards
         private Move BoardDiff(Board before, Board after) {
+            // cache player handles
+            PiecePositions.Player ActivePlayerBefore = ActivePlayer(before);
+            PiecePositions.Player InactivePlayerAfter = InactivePlayer(after);
+
             var Result = new Move();
 
-            // get the starting position of the moving piece
-            ulong Position = ActivePlayer(before).All & ~ActivePlayer(after).All;
-            int NumPositions = Utilities.NumActiveBits(Position);
-            if (NumPositions == 0) throw new ArgumentException("none of the active player's pieces moved");
+            /// get the starting positions of the moving pieces ///
+            ulong MultiPositions = ActivePlayerBefore.All & ~InactivePlayerAfter.All;
+            if (MultiPositions == 0) { Debug.WriteLine("none of the active player's pieces moved"); return null; }
+            bool TwoPieceFlag = false;
+            ulong RookStartPosition = 0;
+            ulong RookEndPosition = 0;
+            ulong[] Positions = new List<ulong>(Utilities.BitSplit(MultiPositions)).ToArray();
+            PieceMoveType FromPiece, ToPiece;
 
-            // could this be a castling move?
-            if (NumPositions > 1) { // yes
-                // get the king
-                Position &= ActivePlayer(before).King;
-                if (Position == 0) throw new ArgumentException("active player moved more than one piece on a non-castling move");
+            if (Positions.Length > 2) { // more than two moved pieces
+                Debug.WriteLine("more than two pieces moved");
+                return null;
+            } else if (Positions.Length == 2) { // double piece move (castle)
+                TwoPieceFlag = true;
+
+                FromPiece = PieceTypeAtAddress(ActivePlayerBefore, new BoardAddress(Positions[0]));
+                if (FromPiece != PieceMoveType.King) {
+                    if (FromPiece != PieceMoveType.Rook) {
+                        Debug.WriteLine("two pieces moved, but a rook was not one of them");
+                        return null;
+                    }
+
+                    FromPiece = PieceTypeAtAddress(ActivePlayerBefore, new BoardAddress(Positions[1]));
+                    if (FromPiece != PieceMoveType.King) { Debug.WriteLine("two pieces moved, but the king was not one of them"); return null; }
+
+                    Result.From = new BoardAddress(Positions[1]);
+                    RookStartPosition = Positions[0];
+                } else {
+                    if (PieceTypeAtAddress(ActivePlayerBefore, new BoardAddress(Positions[1])) != PieceMoveType.Rook) {
+                        Debug.WriteLine("two pieces moved, but a rook was not one of them");
+                        return null;
+                    }
+
+                    Result.From = new BoardAddress(Positions[0]);
+                    RookStartPosition = Positions[1];
+                }
+            } else { // single piece moved
+                Result.From = new BoardAddress(Positions[0]);
+                FromPiece = PieceTypeAtAddress(ActivePlayerBefore, new BoardAddress(Positions[0]));
             }
 
-            Result.From = new BoardAddress(Position);
+            /// get the ending position of the moving piece ///
+            MultiPositions = InactivePlayerAfter.All & ~ActivePlayerBefore.All;
+            Positions = new List<ulong>(Utilities.BitSplit(MultiPositions)).ToArray();
+            if (MultiPositions == 0) { Debug.WriteLine("the active player lost a piece on thier turn"); return null; }
 
-            // get the ending position of the moving piece
+            if (Positions.Length > 2) { // more than two pieces moved
+                Debug.WriteLine("a piece was added to the board");
+                return null;
+            } else if (Positions.Length == 2) { // double piece move (castle)
+                if (!TwoPieceFlag) { Debug.WriteLine("a piece was added to the board"); return null; }
 
-            throw new NotImplementedException();
+                ToPiece = PieceTypeAtAddress(InactivePlayerAfter, new BoardAddress(Positions[0]));
+                if (ToPiece != PieceMoveType.King) {
+                    if (ToPiece != PieceMoveType.Rook) { Debug.WriteLine("two pieces moved, but a rook was not one of them"); return null; }
+                    ToPiece = PieceTypeAtAddress(InactivePlayerAfter, new BoardAddress(Positions[1]));
+                    if (ToPiece != PieceMoveType.King) { Debug.WriteLine("two pieces moved, but the king was not one of them"); return null; }
+
+                    Result.To = new BoardAddress(Positions[1]);
+                    RookEndPosition = Positions[0];
+                } else {
+                    if (PieceTypeAtAddress(InactivePlayerAfter, new BoardAddress(Positions[1])) != PieceMoveType.Rook) {
+                        Debug.WriteLine("two pieces moved, but a rook was not one of them");
+                        return null;
+                    }
+
+                    Result.To = new BoardAddress(Positions[0]);
+                    RookEndPosition = Positions[1];
+                }
+            } else { // single piece moved
+                if (TwoPieceFlag) { Debug.WriteLine("the active player lost a piece on thier turn"); return null; }
+                Result.To = new BoardAddress(Positions[0]);
+                ToPiece = PieceTypeAtAddress(InactivePlayerAfter, new BoardAddress(Positions[0]));
+            }
+
+            Result.MoveType = MoveTypeFromPieceTypes(FromPiece, ToPiece);
+            if (TwoPieceFlag) { // update king move to a castling move
+                if (Result.MoveType != PieceMoveType.King) { // sanity check
+                    Debug.WriteLine("the move indicates a castle, but the king didn't move");
+                    return null;
+                }
+
+                if (before.ActiveColorWhite) { // white player's move
+                    if ((RookStartPosition ^ Masks.WhiteKingSideRookInitPos) == 0) { // king side castle
+                        if ((RookEndPosition ^ Masks.WhiteKingSideRookPostCastlePos) != 0) { // does the rook's end position agree?
+                            Debug.WriteLine("the move indicates a kingside castle, but the rook didn't move to its proper position");
+                            return null;
+                        }
+
+                        Result.MoveType = PieceMoveType.KingKingside;
+                    } else if ((RookStartPosition ^ Masks.WhiteQueenSideRookInitPos) == 0) { // queenside castle
+                        if ((RookEndPosition ^ Masks.WhiteQueenSideRookPostCastlePos) != 0) { // does the rook's end position agree?
+                            Debug.WriteLine("the move indicates a queenside castle, but the rook didn't move to its proper position");
+                            return null;
+                        }
+
+                        Result.MoveType = PieceMoveType.KingQueenside;
+                    } else { // invalid
+                        Debug.WriteLine("the move indicates a castle, but the rook was not in its proper position");
+                        return null;
+                    }
+                } else { // black player's move
+                    if ((RookStartPosition ^ Masks.BlackKingSideRookInitPos) == 0) { // king side castle
+                        if ((RookEndPosition ^ Masks.BlackKingSideRookPostCastlePos) != 0) { // does the rook's end position agree?
+                            Debug.WriteLine("the move indicates a kingside castle, but the rook didn't move to its proper position");
+                            return null;
+                        }
+
+                        Result.MoveType = PieceMoveType.KingKingside;
+                    } else if ((RookStartPosition ^ Masks.BlackQueenSideRookInitPos) == 0) { // queenside castle
+                        if ((RookEndPosition ^ Masks.BlackQueenSideRookPostCastlePos) != 0) { // does the rook's end position agree?
+                            Debug.WriteLine("the move indicates a queenside castle, but the rook didn't move to its proper position");
+                            return null;
+                        }
+
+                        Result.MoveType = PieceMoveType.KingQueenside;
+                    } else { // invalid
+                        Debug.WriteLine("the move indicates a castle, but the rook was not in its proper position");
+                        return null;
+                    }
+                }
+            }
+
             return Result;
         }
 
@@ -192,6 +303,43 @@
 
         private PiecePositions.Player ActivePlayer(Board board) { if (board.ActiveColorWhite) return board.Pieces.White; else return board.Pieces.Black; }
         private PiecePositions.Player InactivePlayer(Board board) { if (board.ActiveColorWhite) return board.Pieces.Black; else return board.Pieces.White; }
+
+        // get the type of piece at a given board address
+        private PieceMoveType PieceTypeAtAddress(PiecePositions.Player player, BoardAddress address) {
+            if ((address.Position & player.Pawns) != 0) return PieceMoveType.Pawn;
+            else if ((address.Position & player.Knights) != 0) return PieceMoveType.Knight;
+            else if ((address.Position & player.Bishops) != 0) return PieceMoveType.Bishop;
+            else if ((address.Position & player.Rooks) != 0) return PieceMoveType.Rook;
+            else if ((address.Position & player.Queens) != 0) return PieceMoveType.Queen;
+            else if ((address.Position & player.King) != 0) return PieceMoveType.King;
+            else { Debug.WriteLine("no piece found at specified position"); return PieceMoveType.Undefined; }
+        }
+
+        // get the move type using the before and after piece types
+        private PieceMoveType MoveTypeFromPieceTypes(PieceMoveType before, PieceMoveType after) {
+            // argument guard
+            if (before < PieceMoveType.Pawn || before > PieceMoveType.King || after < PieceMoveType.Pawn || after > PieceMoveType.King)
+                return PieceMoveType.Undefined;
+
+            if (before == after) { // standard or castling move
+                return before;
+            } else if (before == PieceMoveType.Pawn) { // pawn promo
+                switch (after) {
+                    case PieceMoveType.Queen:
+                        return PieceMoveType.PawnQueen;
+                    case PieceMoveType.Rook:
+                        return PieceMoveType.PawnRook;
+                    case PieceMoveType.Bishop:
+                        return PieceMoveType.PawnBishop;
+                    case PieceMoveType.Knight:
+                        return PieceMoveType.PawnKnight;
+                    default:
+                        return PieceMoveType.Undefined;
+                }
+            }
+
+            return PieceMoveType.Undefined;
+        }
 
         private Queue<Move> PastMoves = new Queue<Move>();
         private Board LastBoard;
