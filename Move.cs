@@ -2,7 +2,7 @@
     using System;
 
     // chess move representation
-    internal struct Move {
+    internal class Move {
         public BoardAddress From;
         public BoardAddress To;
         public PieceMoveType MoveType;
