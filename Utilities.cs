@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace LittleOwl {
+    using System;
+    using System.Collections.Generic;
 
-namespace LittleOwl {
     // helper methods not specific to chess engine functionality
     internal static class Utilities {
         private static Random Random = new Random(); // todo Utilities.Random thread safe

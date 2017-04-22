@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace LittleOwl {
+    using System;
+    using System.Collections.Generic;
 
-namespace LittleOwl {
     internal class BoardAddress {
         public int File { get { return Index % 8; } } // zero based
         public int Rank { get { return Index / 8; } } // zero based
