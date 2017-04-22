@@ -100,11 +100,11 @@
 
     internal enum PieceMoveType : sbyte {
         Undefined = -1,
-        Pawn = 0,
-        PawnKnight = 1, // promo
-        PawnBishop = 2, // promo
-        PawnRook = 3, // promo
-        PawnQueen = 4, // promo
+        PawnKnight = 0, // promo
+        PawnBishop = 1, // promo
+        PawnRook = 2, // promo
+        PawnQueen = 3, // promo
+        Pawn = 4,
         Knight = 5,
         Bishop = 6,
         Rook = 7,
