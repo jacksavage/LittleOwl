@@ -11,6 +11,7 @@
             // store the enemy's last move
             if (LastBoard != null) {
                 var LastMove = BoardDiff(LastBoard, Board);
+                if (LastMove == null) throw new Exception("could not determine last move using a board diff");
                 if (PastMoves.Count == 8) PastMoves.Dequeue();
                 PastMoves.Enqueue(LastMove);
             }
