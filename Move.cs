@@ -7,6 +7,8 @@
         public BoardAddress To;
         public PieceMoveType MoveType;
 
+        public Move() {}
+
         public Move(BoardAddress f, BoardAddress t, PieceMoveType m) {
             From = f;
             To = t;
