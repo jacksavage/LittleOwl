@@ -98,7 +98,8 @@
         public static bool operator !=(Move left, Move right) { return !(left == right); }
     }
 
-    internal enum PieceMoveType : byte {
+    internal enum PieceMoveType : sbyte {
+        Undefined = -1,
         Pawn = 0,
         PawnKnight = 1, // promo
         PawnBishop = 2, // promo
