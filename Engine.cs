@@ -334,8 +334,7 @@
         private Board LastBoard;
         private Searcher Searcher = new Searcher();
 
-
-        private int Depth = 10;
+        private int Depth = 10; // todo store this in external settings
         private int QuiescentDepth = 3;
         private int Alpha = int.MinValue;
         private int Beta = int.MaxValue;

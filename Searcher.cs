@@ -161,7 +161,7 @@
             return Result;
         }
 
-        private const int PawnValue = 1;
+        private const int PawnValue = 1; // todo store this in external settings
         private const int KnightValue = 3;
         private const int BishopValue = 3;
         private const int RookValue = 5;
