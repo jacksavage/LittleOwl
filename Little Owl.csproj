@@ -61,6 +61,7 @@
     <Compile Include="Board Address.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Masks.cs" />
     <Compile Include="Move Generation.cs" />
     <Compile Include="Move.cs" />
