@@ -24,7 +24,7 @@
         }
 
         // apply a move to a given board
-        private Board ApplyMove(Board board, Move move) {
+        internal static Board ApplyMove(Board board, Move move) {
             var Result = new Board();
             Result.ActiveColorWhite = board.ActiveColorWhite;
 
@@ -145,19 +145,19 @@
         }
 
         // does the active player have a rook in the init position of the queenside rook?
-        private bool QueenSideRookMoved(Board board) {
+        private static bool QueenSideRookMoved(Board board) {
             if (board.ActiveColorWhite) return (board.Pieces.White.Rooks & Masks.WhiteQueenSideRookInitPos) != 0;
             else return (board.Pieces.Black.Rooks & Masks.BlackQueenSideRookInitPos) != 0;
         }
 
         // does the active player have a rook in the init position of the kingside rook?
-        private bool KingSideRookMoved(Board board) {
+        private static bool KingSideRookMoved(Board board) {
             if (board.ActiveColorWhite) return (board.Pieces.White.Rooks & Masks.WhiteKingSideRookInitPos) != 0;
             else return (board.Pieces.Black.Rooks & Masks.BlackKingSideRookInitPos) != 0;
         }
 
         // create a move from a diff of two boards
-        private Move BoardDiff(Board before, Board after) {
+        private static Move BoardDiff(Board before, Board after) {
             // cache player handles
             PiecePositions.Player ActivePlayerBefore = before.ActivePlayer;
             PiecePositions.Player InactivePlayerAfter = after.InactivePlayer;
@@ -291,7 +291,7 @@
         }
 
         // get the type of piece at a given board address
-        private PieceMoveType PieceTypeAtAddress(PiecePositions.Player player, BoardAddress address) {
+        private static PieceMoveType PieceTypeAtAddress(PiecePositions.Player player, BoardAddress address) {
             if ((address.Position & player.Pawns) != 0) return PieceMoveType.Pawn;
             else if ((address.Position & player.Knights) != 0) return PieceMoveType.Knight;
             else if ((address.Position & player.Bishops) != 0) return PieceMoveType.Bishop;
@@ -302,7 +302,7 @@
         }
 
         // get the move type using the before and after piece types
-        private PieceMoveType MoveTypeFromPieceTypes(PieceMoveType before, PieceMoveType after) {
+        private static PieceMoveType MoveTypeFromPieceTypes(PieceMoveType before, PieceMoveType after) {
             // argument guard
             if (before < PieceMoveType.Pawn || before > PieceMoveType.King || after < PieceMoveType.Pawn || after > PieceMoveType.King)
                 return PieceMoveType.Undefined;
