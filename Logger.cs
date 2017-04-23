@@ -1,4 +1,4 @@
-﻿namespace ChessEngine {
+﻿namespace LittleOwl {
     using System;
     using System.Collections.Generic;
 
