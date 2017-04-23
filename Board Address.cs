@@ -60,5 +60,5 @@
         }
 
         public override string ToString() { return string.Format("{0}{1}", File + 'a', Rank + 1); }
-    }
+    } // todo add 'Cached' flag for calculted properties
 }
