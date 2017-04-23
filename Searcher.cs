@@ -96,7 +96,48 @@
 
         // is the active player in draw?
         private bool InDraw(Board board) {
-            throw new NotImplementedException();
+            // no pawn move or capture
+            if (board.HalfMoveClock < 1) return true;
+
+            // insufficient material
+            if (WhiteAtMove) { if (InsufficientMaterial(board.Pieces.White)) return true; }
+            else { if (InsufficientMaterial(board.Pieces.Black)) return true; }
+
+            // move repetition
+            if (MoveRepetitionOccurred(board)) return true;
+
+            // stalemate
+            if (WhiteAtMove) { if (MoveGen.MoveMap(board.Pieces.White.King) == 0) return true; }
+            else if (MoveGen.MoveMap(board.Pieces.Black.King) == 0) return true;
+
+            return false;
+        }
+
+        // does the active player have insufficient material?
+        private bool InsufficientMaterial(PiecePositions.Player player) {
+            if ((player.Pawns | player.Rooks | player.Queens) == 0) {
+                int NumKnights = Utilities.NumActiveBits(player.Knights);
+                int NumBishops = Utilities.NumActiveBits(player.Bishops);
+
+                if (NumBishops == 1 && NumKnights == 0) return true; // king and a bishop
+                if (NumBishops == 0 && NumKnights == 1) return true; // king and knight
+                if (NumBishops == 0 && NumKnights == 0) return true; // only a king remaining
+            }
+
+            return false;
+        }
+
+        // check for simplified three move repetition
+        private bool MoveRepetitionOccurred(Board board) {
+            if (board.PastMoves.Count < 8) return false;
+
+            Move[] Moves = board.PastMoves.ToArray();
+            if (Moves[0] == Moves[4] &&
+                Moves[1] == Moves[5] &&
+                Moves[2] == Moves[6] &&
+                Moves[3] == Moves[7]) return true;
+
+            return false;
         }
 
         // the material advantange of the active player
