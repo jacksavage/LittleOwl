@@ -64,6 +64,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Masks.cs" />
     <Compile Include="Move Generation.cs" />
+    <Compile Include="Move Maps.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Searcher.cs" />
     <Compile Include="Troubleshooting.cs" />
