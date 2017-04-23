@@ -36,7 +36,7 @@
             }
         }
 
-        public ulong Pawns { get { return _Pawns; } set { _Pawns = value; } }
+        public ulong Pawns { get { return _Pawns; } set { _Pawns = value; } } // todo setters should update 'All'
         public ulong Knights { get { return _Knights; } set { _Knights = value; } }
         public ulong Bishops { get { return _Bishops; } set { _Bishops = value; } }
         public ulong Rooks { get { return _Rooks; } set { _Rooks = value; } }
@@ -62,7 +62,7 @@
                 }
             }
 
-            public ulong Pawns { get { return _All & Parent.Pawns; } set { Parent._Pawns = value & (Parent._Pawns & ~_All); } }
+            public ulong Pawns { get { return _All & Parent.Pawns; } set { Parent._Pawns = value & (Parent._Pawns & ~_All); } } // todo setters should update all
             public ulong Knights { get { return _All & Parent.Knights; } set { Parent._Knights = value & (Parent._Knights & ~_All); } }
             public ulong Bishops { get { return _All & Parent.Bishops; } set { Parent._Bishops = value & (Parent._Bishops & ~_All); } }
             public ulong Rooks { get { return _All & Parent.Rooks; } set { Parent._Rooks = value & (Parent._Rooks & ~_All); } }
