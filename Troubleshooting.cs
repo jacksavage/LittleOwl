@@ -2,9 +2,9 @@
     using System;
     using System.Text;
 
-    internal class Troubleshooting {
+    internal static class Troubleshooting {
         // make a board rep string with file/rank labels and letters used for each piece
-        public string HumanReadable(Board board) {
+        public static string HumanReadable(Board board) {
             var Result = new StringBuilder();
             ulong CurPos;
             string Letter = string.Empty;
@@ -37,6 +37,32 @@
 
                         Result.AppendFormat("{0} ", Letter); // add the letter 
                     }
+                }
+
+                Result.AppendLine();
+            }
+
+            return Result.ToString();
+        }
+
+        // create a string rep of a single bitboard
+        public static string BitboardToString(ulong bb) {
+            var Result = new StringBuilder();
+            Result.AppendLine("  a b c d e f g h"); // print file header
+
+            // step through the starting index of each rank (left to right)
+            for (int start = 56; start > -1; start -= 8) {
+                // add rank number (relative to white)
+                Result.AppendFormat("{0} ", (start / 8) + 1);
+
+                // step through the other files relative to the starting index
+                for (int i = 0; i < 8; i++) {
+                    // if that bit is not set
+                    // note this op is very slow but this is just for debug
+                    if ((bb & (ulong)Math.Pow(2, start + i)) == 0)
+                        Result.Append(". "); // add a dot
+                    else // bit is set
+                        Result.Append("1 "); // add a one
                 }
 
                 Result.AppendLine();
