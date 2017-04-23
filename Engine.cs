@@ -16,8 +16,9 @@
                 PastMoves.Enqueue(LastMove);
             }
 
-            Board.PastMoves = PastMoves; // assign engine's past moves to the board
-            var Move = new Move(); // todo search for the best move
+            // assign engine's past moves to the board and search for the best move
+            Board.PastMoves = PastMoves;
+            Move Move = Searcher.Search(Board, Depth, QuiescentDepth, Alpha, Beta, MoveTimeLimit);
 
             return Move.ToString();
         }
@@ -344,5 +345,13 @@
 
         private Queue<Move> PastMoves = new Queue<Move>();
         private Board LastBoard;
+        private Searcher Searcher = new Searcher();
+
+        // search settings
+        private int Depth = 10;
+        private int QuiescentDepth = 3;
+        private int Alpha = int.MinValue;
+        private int Beta = int.MaxValue;
+        private TimeSpan MoveTimeLimit = new TimeSpan(0, 0, 0, 3, 500);
     }
 }
