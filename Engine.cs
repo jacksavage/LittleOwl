@@ -31,7 +31,7 @@
             /// update piece positions ///
             Result.Pieces = new PiecePositions(board.Pieces);
             Result.Pieces.All &= ~(move.From.Position | move.To.Position);
-            PiecePositions.Player ActiveP = ActivePlayer(Result);
+            PiecePositions.Player ActiveP = Result.ActivePlayer;
             switch (move.MoveType) {
                 case PieceMoveType.Pawn:
                     ActiveP.Pawns |= move.To.Position;
@@ -81,7 +81,7 @@
 
             /// update the draw counter ///
             bool PawnMoved = move.MoveType < PieceMoveType.Knight;
-            bool CaptureOccured = (move.To.Position & (InactivePlayer(board).All | board.EnPassantTarget.Position)) != 0;
+            bool CaptureOccured = (move.To.Position & (board.InactivePlayer.All | board.EnPassantTarget.Position)) != 0;
             if (PawnMoved || CaptureOccured) Result.HalfMoveClock = 100; // reset
             else Result.HalfMoveClock = (byte)(board.HalfMoveClock - 1); // decrement
 
@@ -159,8 +159,8 @@
         // create a move from a diff of two boards
         private Move BoardDiff(Board before, Board after) {
             // cache player handles
-            PiecePositions.Player ActivePlayerBefore = ActivePlayer(before);
-            PiecePositions.Player InactivePlayerAfter = InactivePlayer(after);
+            PiecePositions.Player ActivePlayerBefore = before.ActivePlayer;
+            PiecePositions.Player InactivePlayerAfter = after.InactivePlayer;
 
             var Result = new Move();
 
@@ -289,9 +289,6 @@
 
             return Result;
         }
-
-        private PiecePositions.Player ActivePlayer(Board board) { if (board.ActiveColorWhite) return board.Pieces.White; else return board.Pieces.Black; }
-        private PiecePositions.Player InactivePlayer(Board board) { if (board.ActiveColorWhite) return board.Pieces.Black; else return board.Pieces.White; }
 
         // get the type of piece at a given board address
         private PieceMoveType PieceTypeAtAddress(PiecePositions.Player player, BoardAddress address) {
