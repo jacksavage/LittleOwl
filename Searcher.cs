@@ -10,6 +10,7 @@
             Timeout = false;
         }
 
+        // perform a minimax search from the current board to try and select the best move
         public Move Search(Board root, int depth, int qDepth, int alpha, int beta, TimeSpan time) {
             // guards
             if (depth < 1 || qDepth < 1) throw new ArgumentException("valid depth limits are greater than zero");
