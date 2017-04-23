@@ -89,6 +89,10 @@
             throw new NotImplementedException();
         }
 
+        private bool InCheck(Board board) {
+            throw new NotImplementedException();
+        }
+
         // is the active player in check mate?
         private bool InCheckMate(Board board) {
             throw new NotImplementedException();
@@ -107,8 +111,8 @@
             if (MoveRepetitionOccurred(board)) return true;
 
             // stalemate
-            if (WhiteAtMove) { if (MoveGen.MoveMap(board.Pieces.White.King) == 0) return true; }
-            else if (MoveGen.MoveMap(board.Pieces.Black.King) == 0) return true;
+            if (WhiteAtMove) { if (MoveGen.MoveMap(board.Pieces.White) == 0) return true; }
+            else { if (MoveGen.MoveMap(board.Pieces.Black) == 0) return true; }
 
             return false;
         }
