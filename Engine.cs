@@ -331,8 +331,9 @@
         }
 
         private Queue<Move> PastMoves = new Queue<Move>();
-        private Board LastBoard;
+        private Board LastBoard = null;
         private Searcher Searcher = new Searcher();
+        public Logger GameLogger = new Logger();
 
         private int Depth = 10; // todo store this in external settings
         private int QuiescentDepth = 3;
