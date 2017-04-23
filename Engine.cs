@@ -290,19 +290,6 @@
             return Result;
         }
 
-        // check for simplified three move repetition
-        private bool MoveRepetitionOccurred(Board board) {
-            if (board.PastMoves.Count < 8) return false;
-
-            Move[] Moves = PastMoves.ToArray();
-            if (Moves[0] == Moves[4] &&
-                Moves[1] == Moves[5] &&
-                Moves[2] == Moves[6] &&
-                Moves[3] == Moves[7]) return true;
-
-            return false;
-        }
-
         private PiecePositions.Player ActivePlayer(Board board) { if (board.ActiveColorWhite) return board.Pieces.White; else return board.Pieces.Black; }
         private PiecePositions.Player InactivePlayer(Board board) { if (board.ActiveColorWhite) return board.Pieces.Black; else return board.Pieces.White; }
 
@@ -347,7 +334,7 @@
         private Board LastBoard;
         private Searcher Searcher = new Searcher();
 
-        // search settings
+
         private int Depth = 10;
         private int QuiescentDepth = 3;
         private int Alpha = int.MinValue;
