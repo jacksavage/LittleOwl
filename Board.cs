@@ -234,11 +234,13 @@
         public Castling CastlingAvailability;
         public byte HalfMoveClock;
         public int FullMoveNumber;
+
         public Queue<Move> PastMoves; // stores past eight moves
+        public PiecePositions.Player ActivePlayer { get { if (ActiveColorWhite) return Pieces.White; else return Pieces.Black; } }
+        public PiecePositions.Player InactivePlayer { get { return ActivePlayer.Opponent; } }
 
         public class Castling {
             public Move White, Black;
-
             public enum Move : byte { Disallowed, QueenSide, KingSide, BothSides }
 
             // deep copy constructor
