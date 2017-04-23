@@ -22,7 +22,7 @@
         }
 
         public int Index { get { return IndexLookup[Position]; } set { Position = PositionLookup[value]; } }
-        public int SlashIndex { get { return (Rank - File) & 0xF; } }
+        public int SlashIndex { get { return (Rank - File) & 0xF; } } // todo consider replacing these with array lookups
         public int BackSlashIndex { get { return (Rank + File) ^ 0x7; } }
 
         private ulong _Position;
