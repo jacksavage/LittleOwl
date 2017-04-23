@@ -15,6 +15,12 @@
             MoveType = m;
         }
 
+        public Move(ulong f, ulong t, PieceMoveType m) {
+            From = new BoardAddress(f);
+            To = new BoardAddress(t);
+            MoveType = m;
+        }
+
         // create a move from ACN string and the piece positions
         public Move(string acn, PiecePositions pieces) {
             int Len = acn.Length;
