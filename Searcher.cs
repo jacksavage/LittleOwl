@@ -71,7 +71,6 @@
             return Value;
         }
 
-        private bool WhiteAtMove;
         private Timer Countdown;
         private bool Timeout;
         private void ClockElapsed(object sender, ElapsedEventArgs e) { Timeout = true; }
