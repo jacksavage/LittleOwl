@@ -62,6 +62,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Masks.cs" />
+    <Compile Include="Move Generation.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Searcher.cs" />
     <Compile Include="Troubleshooting.cs" />
