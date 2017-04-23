@@ -40,7 +40,7 @@
 
         // find minimized utility relative to the active player from a given board
         private int MinV(Board board, int depth, int qDepth, int alpha, int beta) {
-            if (Timeout || depth == 0 || Terminal(board)) return Utility(board, WhiteAtMove);
+            if (Timeout || depth == 0 || Terminal(board)) return Utility(board);
 
             int Value = int.MaxValue;
             int NextDepth = depth - 1;
@@ -56,7 +56,7 @@
 
         // find maximized utility relative to the active player from a given board
         private int MaxV(Board board, int depth, int qDepth, int alpha, int beta) {
-            if (Timeout || depth == 0 || Terminal(board)) return Utility(board, WhiteAtMove);
+            if (Timeout || depth == 0 || Terminal(board)) return Utility(board);
 
             int Value = int.MinValue;
             int NextDepth = depth - 1;
@@ -74,17 +74,53 @@
             throw new NotImplementedException();
         }
 
-        private bool Terminal(Board board) {
-            throw new NotImplementedException();
+        // is this an end-of-game state?
+        private bool Terminal(Board board) { return InCheckMate(board) || InDraw(board); }
+
+        // the utility of a given board to the active player
+        private int Utility(Board board) {
+            if (InCheckMate(board)) return int.MinValue;
+            if (InDraw(board)) return int.MinValue + 1;
+            return MaterialAdvantage(board);
         }
 
-        private int Utility(Board board, bool white) {
-            throw new NotImplementedException();
-        }
-
+        // is this an inactive state?
         private bool Quiescent(Board board) {
             throw new NotImplementedException();
         }
+
+        // is the active player in check mate?
+        private bool InCheckMate(Board board) {
+            throw new NotImplementedException();
+        }
+
+        // is the active player in draw?
+        private bool InDraw(Board board) {
+            throw new NotImplementedException();
+        }
+
+        // the material advantange of the active player
+        private int MaterialAdvantage(Board board) {
+            if (WhiteAtMove) return MaterialValue(board.Pieces.White) - MaterialValue(board.Pieces.Black);
+            else return MaterialValue(board.Pieces.Black) - MaterialValue(board.Pieces.White);
+        }
+
+        // the material value for a player
+        private int MaterialValue(PiecePositions.Player player) {
+            int Result = 0;
+            foreach (ulong pawn in Utilities.BitSplit(player.Pawns)) Result += PawnValue;
+            foreach (ulong knight in Utilities.BitSplit(player.Knights)) Result += KnightValue;
+            foreach (ulong bishop in Utilities.BitSplit(player.Knights)) Result += BishopValue;
+            foreach (ulong rook in Utilities.BitSplit(player.Knights)) Result += RookValue;
+            foreach (ulong queen in Utilities.BitSplit(player.Knights)) Result += QueenValue;
+            return Result;
+        }
+
+        private const int PawnValue = 1;
+        private const int KnightValue = 3;
+        private const int BishopValue = 3;
+        private const int RookValue = 5;
+        private const int QueenValue = 9;
 
         private bool WhiteAtMove;
         private Timer Countdown;
