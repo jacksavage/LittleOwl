@@ -4,21 +4,23 @@
         public PiecePositions() {
             Black = new Player(this);
             White = new Player(this);
+            Black.Opponent = White;
+            White.Opponent = Black;
         }
 
         // deep copy constructor
-        public PiecePositions(PiecePositions from) {
-            _Pawns = from._Pawns;
-            _Knights = from._Knights;
-            _Bishops = from._Bishops;
-            _Rooks = from.Rooks;
-            _Queens = from._Queens;
-            _Kings = from._Kings;
+        public PiecePositions(PiecePositions source) {
+            _Pawns = source._Pawns;
+            _Knights = source._Knights;
+            _Bishops = source._Bishops;
+            _Rooks = source.Rooks;
+            _Queens = source._Queens;
+            _Kings = source._Kings;
 
             Black = new Player(this);
-            Black.All = from.Black.All;
+            Black.All = source.Black.All;
             White = new Player(this);
-            White.All = from.White.All;
+            White.All = source.White.All;
         }
 
         private ulong _Pawns;
@@ -71,6 +73,7 @@
 
             private ulong _All;
             private PiecePositions Parent;
+            public Player Opponent = null;
         }
     }
 }
