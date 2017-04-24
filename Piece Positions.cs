@@ -1,4 +1,6 @@
-﻿namespace LittleOwl {
+﻿using System;
+
+namespace LittleOwl {
     // bitboard representation of chess piece positions
     internal class PiecePositions {
         public PiecePositions() {
@@ -31,7 +33,7 @@
         private ulong _Kings;
 
         public ulong All {
-            get { return Black.All & White.All; }
+            get { return Black.All | White.All; }
             set {
                 Black.All &= value;
                 White.All &= value;
@@ -64,12 +66,60 @@
                 }
             }
 
-            public ulong Pawns { get { return _All & Parent.Pawns; } set { Parent._Pawns = value & (Parent._Pawns & ~_All); } } // todo setters should update all
-            public ulong Knights { get { return _All & Parent.Knights; } set { Parent._Knights = value & (Parent._Knights & ~_All); } }
-            public ulong Bishops { get { return _All & Parent.Bishops; } set { Parent._Bishops = value & (Parent._Bishops & ~_All); } }
-            public ulong Rooks { get { return _All & Parent.Rooks; } set { Parent._Rooks = value & (Parent._Rooks & ~_All); } }
-            public ulong Queens { get { return _All & Parent.Queens; } set { Parent.Queens = value & (Parent.Queens & ~_All); } }
-            public ulong King { get { return _All & Parent.Kings; } set { Parent._Kings = value & (Parent._Kings & ~_All); } }
+            public ulong Pawns {
+                get { return _All & Parent.Pawns; }
+                set {
+                    _All &= ~Pawns; // clear my pawns from all
+                    if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
+                    Parent._Pawns = value | (Parent._Pawns & ~_All); // update the pawn board
+                    _All |= value; // add back new pawns to all
+                }
+            } // todo setters should update all
+            public ulong Knights {
+                get { return _All & Parent.Knights; }
+                set {
+                    _All &= ~Knights;
+                    if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
+                    Parent._Knights = value | (Parent._Knights & ~_All);
+                    _All |= value;
+                }
+            }
+            public ulong Bishops {
+                get { return _All & Parent.Bishops; }
+                set {
+                    _All &= ~Bishops;
+                    if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
+                    Parent._Bishops = value | (Parent._Bishops & ~_All);
+                    _All |= value;
+                }
+            }
+            public ulong Rooks {
+                get { return _All & Parent.Rooks; }
+                set {
+                    _All &= ~Rooks;
+                    if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
+                    Parent._Rooks = value | (Parent._Rooks & ~_All);
+                    _All |= value;
+                }
+            }
+            public ulong Queens {
+                get { return _All & Parent.Queens; }
+                set {
+                    _All &= ~Queens;
+                    if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
+                    Parent.Queens = value | (Parent.Queens & ~_All);
+                    _All |= value;
+                }
+            }
+            public ulong King {
+                get { return _All & Parent.Kings; }
+                set {
+                    _All &= ~King;
+                    if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
+                    Parent._Kings = value | (Parent._Kings & ~_All);
+                    _All |= value;
+                }
+            }
 
             private ulong _All;
             private PiecePositions Parent;
