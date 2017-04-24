@@ -10,8 +10,11 @@
         private static Dictionary<ulong, int> IndexLookup;
         static BoardAddress() {
             PositionLookup = new ulong[64];
-            for (uint i = 0; i < 64; i++)
-                PositionLookup[i] = Utilities.Pow(2, i);
+            ulong BB = 1;
+            for (uint i = 0; i < 64; i++) {
+                PositionLookup[i] = BB;
+                BB <<= 1;
+            }
 
             IndexLookup = new Dictionary<ulong, int>();
             ulong Bitboard = 1;
