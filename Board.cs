@@ -74,6 +74,7 @@
             else ActiveColorWhite = false;
 
             // castling availablity
+            CastlingAvailability = new Castling();
             Field = Match.Groups[3].Value;
             if (Field == "-") { // not available
                 CastlingAvailability.White = Castling.Move.Disallowed;
@@ -242,12 +243,6 @@
         public class Castling {
             public Move White, Black;
             public enum Move : byte { Disallowed, QueenSide, KingSide, BothSides }
-
-            // deep copy constructor
-            public Castling(Castling source) {
-                White = source.White;
-                Black = source.Black;
-            }
         }
     }
 }
