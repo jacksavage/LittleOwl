@@ -52,7 +52,7 @@
         private ulong PositionFromFileRank(char f, int r) {
             f = char.ToLower(f);
             if (f < 'a' || f > 'h') throw new ArgumentException(string.Format("invalid file \"{0}\"", f));
-            if (r < 1 || r > 8) throw new ArgumentException(string.Format("invalid rank \"{0}\"", r));
+            if (r < 0 || r > 7) throw new ArgumentException(string.Format("invalid rank \"{0}\"", r));
 
             int FileIndex = f - 'a';
             int BoardIndex = FileIndex + (r * 8);
