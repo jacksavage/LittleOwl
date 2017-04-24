@@ -62,6 +62,6 @@
             return PositionLookup[BoardIndex];
         }
 
-        public override string ToString() { return string.Format("{0}{1}", File + 'a', Rank + 1); }
+        public override string ToString() { return string.Format("{0}{1}", (char)(File + 'a'), Rank + 1); }
     } // todo add 'Cached' flag for calculted properties
 }
