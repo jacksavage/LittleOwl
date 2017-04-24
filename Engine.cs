@@ -95,6 +95,7 @@
 
             /// update castling availability ///
             // copy the availablity of the inactive player and store the past availablity for the active player
+            Result.CastlingAvailability = new Board.Castling();
             Board.Castling.Move PastActiveCastlingStatus, NewActiveCastlingStatus;
             if (board.ActiveColorWhite) {
                 Result.CastlingAvailability.Black = board.CastlingAvailability.Black;
