@@ -1,5 +1,6 @@
 ﻿namespace LittleOwl {
     using System;
+    using System.IO;
     using System.Text;
 
     internal static class Troubleshooting {
@@ -69,6 +70,18 @@
             }
 
             return Result.ToString();
+        }
+
+        // save a text file with all of the bitboards in an certain array
+        public static void BitboardArrayToFile(ulong[] maps, string file) {
+            DirectoryInfo D = Directory.CreateDirectory("out");
+            using (var F = new StreamWriter(File.Open(Path.Combine("out", file + ".txt"), FileMode.Create))) {
+                for (int i = 0; i < maps.Length; i++) {
+                    F.WriteLine("- {0} -", i);
+                    F.WriteLine(BitboardToString(maps[i]));
+                    F.WriteLine();
+                }
+            }
         }
     }
 }
