@@ -19,7 +19,7 @@
             Pieces = new PiecePositions();
             for (int rank = 0; rank < 8; rank++) {
                 File = 0;
-                foreach (char c in RankPlacement[rank]) {
+                foreach (char c in RankPlacement[7 - rank]) {
                     Location = new BoardAddress((char)('a' + File), rank);
 
                     switch (c) {
