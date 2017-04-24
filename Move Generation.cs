@@ -15,13 +15,14 @@
             Buffer.AddRange(QueenMoves(board, true));
             Buffer.AddRange(KingMoves(board, true));
 
-            // get captures
+            // group the moves by type
             var Captures = new List<Move>();
+            var Promotions = new List<Move>();
+            var Standard = new List<Move>();
             foreach (Move move in Buffer) {
-                if ((move.To.Position & board.InactivePlayer.All) != 0) {
-                    Captures.Add(move);
-                    Buffer.Remove(move);
-                }
+                if ((move.To.Position & board.InactivePlayer.All) != 0) Captures.Add(move);
+                else if (move.MoveType < PieceMoveType.Pawn) Promotions.Add(move);
+                else Standard.Add(move);
             }
 
             // look at captures
@@ -32,15 +33,6 @@
                 if ((MoveMap(NextBoard, true) & NextBoard.InactivePlayer.King) == 0) yield return new MoveBoardPair(NextBoard, move);
             }
 
-            // get promotions
-            var Promotions = new List<Move>();
-            foreach (Move move in Buffer) {
-                if (move.MoveType < PieceMoveType.Pawn) {
-                    Promotions.Add(move);
-                    Buffer.Remove(move);
-                }
-            }
-
             // look at promos
             foreach (Move move in Utilities.RandomComprehensiveAccess<Move>.Access(Promotions)) {
                 NextBoard = Engine.ApplyMove(board, move);
@@ -49,8 +41,8 @@
                 if ((MoveMap(NextBoard, true) & NextBoard.InactivePlayer.King) == 0) yield return new MoveBoardPair(NextBoard, move);
             }
 
-            // look at everything else
-            foreach (Move move in Utilities.RandomComprehensiveAccess<Move>.Access(Buffer)) {
+            // look at standard moves
+            foreach (Move move in Utilities.RandomComprehensiveAccess<Move>.Access(Standard)) {
                 NextBoard = Engine.ApplyMove(board, move);
 
                 // if current king not in check in next board, yield as a valid move
