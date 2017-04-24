@@ -57,12 +57,12 @@ namespace LittleOwl {
                 get { return _All; }
                 set {
                     _All = value;
-                    Parent._Pawns &= Parent.All;
-                    Parent._Knights &= Parent.All;
-                    Parent._Bishops &= Parent.All;
-                    Parent._Rooks &= Parent.All;
-                    Parent._Queens &= Parent.All;
-                    Parent._Kings &= Parent.All;
+                    Pawns &= _All;
+                    Knights &= _All;
+                    Bishops &= _All;
+                    Rooks &= _All;
+                    Queens &= _All;
+                    King &= _All;
                 }
             }
 
