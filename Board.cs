@@ -114,7 +114,7 @@
         // create a FEN string from the calling board
         public override string ToString() {
             var Result = new StringBuilder();
-            ulong Position = ulong.MaxValue;
+            ulong Position = (ulong)1 << 56;
             byte EmptyCount;
 
             // cache relevant piece position bitboards
@@ -133,7 +133,7 @@
             ulong BlackKing = Pieces.Black.King;
 
             // step through ranks
-            for (int rank = 0; rank < 8; rank++) {
+            for (int rank = 7; rank >= 0; rank--) {
                 // reset empty space counter
                 EmptyCount = 0;
 
@@ -161,16 +161,23 @@
                         else if ((Position & WhiteKing) != 0) Result.Append("K"); // white king
                         else if ((Position & BlackKing) != 0) Result.Append("k"); // black king
                         else throw new Exception("inconsistent piece positioning info"); // undefined
-                    } else { // no
+                    } else { // no piece
                         EmptyCount++;
                     }
 
                     // get next position
-                    Position /= 2; 
+                    Position <<= 1;
                 }
 
+                // add any ending empty count
+                if (EmptyCount != 0) Result.Append(EmptyCount);
+
+                // zip to start of next rank
+                if (Position == 0) Position = (ulong)1 << 48;
+                else Position >>= 16;
+
                 // add proper delimiter
-                if (rank != 7) Result.Append("/");
+                if (rank != 0) Result.Append("/");
                 else Result.Append(" ");
             }
 
@@ -209,6 +216,8 @@
                         Result.Append("k");
                         break;
                 }
+
+                Result.Append(" ");
             }
 
             // is there an enpassant move possible?
