@@ -51,16 +51,16 @@
                     if (Board.HalfMoveClock < 1) return true; // half move clock ran out
                     if (InsufficientMaterial) return true; // insufficient material
                     if (MoveRepetitionOccurred) return true; // move repetition
-                    if (MoveGen.MoveMap(Board.ActivePlayer) == 0) return true; // stalemate
+                    if (MoveGen.MoveMap(Board, true) == 0) return true; // stalemate
                     return false; // not in draw
                 }
             }
 
             // is a given player in check?
-            private bool InCheck { get { return (MoveGen.MoveMap(Board.InactivePlayer) & Board.ActivePlayer.King) != 0; } }
+            private bool InCheck { get { return (MoveGen.MoveMap(Board, false) & Board.ActivePlayer.King) != 0; } }
 
             // is the active player in check mate?
-            private bool InCheckMate { get { return InCheck && (MoveGen.MoveMap(Board.ActivePlayer) == 0); } }
+            private bool InCheckMate { get { return InCheck && (MoveGen.MoveMap(Board, true) == 0); } }
 
             // is this an end-of-game state?
             public bool Terminal { get { return InCheckMate || InDraw; } }
@@ -94,7 +94,8 @@
             // next possible board states
             public IEnumerable<Node> Children {
                 get {
-                    throw new NotImplementedException(); // todo Searcher.Node.Children property
+                    foreach (MoveGen.MoveBoardPair mbp in MoveGen.EachMove(Board))
+                        yield return new Node(this, mbp.Board, mbp.Move);
                 }
             }
 
@@ -114,7 +115,7 @@
 
             private Node Parent;
             public Board Board;
-            public Move LastMove = null;
+            public Move LastMove = null; // move that got us to this node
             public static bool TopLevelActivePlayerWhite;
 
             private const int PawnValue = 1; // todo store this in external settings
