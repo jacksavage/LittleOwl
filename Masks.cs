@@ -151,14 +151,14 @@
         }
 
         // file constants
-        public const ulong FileA = 0x8080808080808080;
-        public const ulong FileB = 0x4040404040404040;
-        public const ulong FileC = 0x2020202020202020;
-        public const ulong FileD = 0x1010101010101010;
-        public const ulong FileE = 0x0808080808080808;
-        public const ulong FileF = 0x0404040404040404;
-        public const ulong FileG = 0x0202020202020202;
-        public const ulong FileH = 0x0101010101010101;
+        public const ulong FileH = 0x8080808080808080;
+        public const ulong FileG = 0x4040404040404040;
+        public const ulong FileF = 0x2020202020202020;
+        public const ulong FileE = 0x1010101010101010;
+        public const ulong FileD = 0x0808080808080808;
+        public const ulong FileC = 0x0404040404040404;
+        public const ulong FileB = 0x0202020202020202;
+        public const ulong FileA = 0x0101010101010101;
 
         // rank constants
         public const ulong Rank1 = 0x00000000000000ff;
