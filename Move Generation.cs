@@ -206,7 +206,7 @@
 
             // get slash and backslash masks
             ulong SlashMask = Masks.Slash[address.SlashIndex];
-            ulong BackslashMask = Masks.BackSlash[address.SlashIndex];
+            ulong BackslashMask = Masks.BackSlash[address.BackSlashIndex];
 
             // get friends and foes in same slash and backslash as bishop
             ulong FriendsInSlash, FriendsInBackslash, FoesInSlash, FoesInBackslash;
