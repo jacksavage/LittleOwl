@@ -23,6 +23,9 @@ namespace LittleOwl {
             Black.All = source.Black.All;
             White = new Player(this);
             White.All = source.White.All;
+
+            Black.Opponent = White;
+            White.Opponent = Black;
         }
 
         private ulong _Pawns;
