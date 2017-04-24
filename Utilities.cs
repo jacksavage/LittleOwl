@@ -4,7 +4,7 @@
 
     // helper methods not specific to chess engine functionality
     internal static class Utilities {
-        private static Random Random = new Random(); // todo Utilities.Random thread safe
+        private static Random Random = new Random((int)DateTime.UtcNow.Ticks); // todo Utilities.Random thread safe
 
         // get single bit ulongs that make up a multibit ulong
         public static IEnumerable<ulong> BitSplit(ulong source) {
