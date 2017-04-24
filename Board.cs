@@ -12,7 +12,7 @@
             if (!Match.Success) throw new ArgumentException(string.Format("invalid FEN string \"{0}\"", fen));
             
             // piece placement
-            string Field = Match.Groups[1].Value.ToLower();
+            string Field = Match.Groups[1].Value;
             string[] RankPlacement = Field.Split('/');
             BoardAddress Location;
             int File;
