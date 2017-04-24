@@ -96,8 +96,8 @@
 
             // enpassant location
             Field = Match.Groups[4].Value;
-            if (Field == "-") EnPassantTarget = null;
-            else EnPassantTarget = new BoardAddress(Field);
+            if (Field == "-") EnPassantTarget = 0;
+            else EnPassantTarget = new BoardAddress(Field).Position;
 
             // halfmove clock
             Field = Match.Groups[5].Value;
@@ -212,10 +212,8 @@
             }
 
             // is there an enpassant move possible?
-            if (EnPassantTarget == null) // no
-                Result.Append("- ");
-            else // yes
-                Result.Append(EnPassantTarget);
+            if (EnPassantTarget == 0) Result.Append("- "); // no
+            else Result.Append(new BoardAddress(EnPassantTarget)); // yes
 
             // add the halfmove clock
             Result.AppendFormat("{0} ", HalfMoveClock);
@@ -232,7 +230,7 @@
 
         public PiecePositions Pieces;
         public bool ActiveColorWhite;
-        public BoardAddress EnPassantTarget;
+        public ulong EnPassantTarget = 0;
         public Castling CastlingAvailability;
         public byte HalfMoveClock;
         public int FullMoveNumber;

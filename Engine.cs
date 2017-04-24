@@ -81,16 +81,16 @@
 
             /// update the draw counter ///
             bool PawnMoved = move.MoveType < PieceMoveType.Knight;
-            bool CaptureOccured = (move.To.Position & (board.InactivePlayer.All | board.EnPassantTarget.Position)) != 0;
+            bool CaptureOccured = (move.To.Position & (board.InactivePlayer.All | board.EnPassantTarget)) != 0;
             if (PawnMoved || CaptureOccured) Result.HalfMoveClock = 100; // reset
             else Result.HalfMoveClock = (byte)(board.HalfMoveClock - 1); // decrement
 
             /// check for en passant target ///
             if (PawnMoved && (move.From.Position & Masks.Ranks27) != 0) {
                 if (board.ActiveColorWhite && ((move.From.Position << 16) & move.To.Position) != 0)
-                    Result.EnPassantTarget = new BoardAddress(move.From.Position << 8);
+                    Result.EnPassantTarget = move.From.Position << 8;
                 else if (!board.ActiveColorWhite && ((move.From.Position >> 16) & move.To.Position) != 0)
-                    Result.EnPassantTarget = new BoardAddress(move.From.Position >> 8);
+                    Result.EnPassantTarget = move.From.Position >> 8;
             }
 
             /// update castling availability ///

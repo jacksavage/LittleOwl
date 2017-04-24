@@ -187,10 +187,8 @@
             }
 
             // can only move to en passant position or into an enemy position
-            if (activePlayer) { // only active player can cap en passant
-                if (board.EnPassantTarget != null) Caps &= board.InactivePlayer.All | board.EnPassantTarget.Position;
-                else Caps &= board.InactivePlayer.All;
-            } else Caps &= board.ActivePlayer.All;
+            if (activePlayer)  Caps &= board.InactivePlayer.All | board.EnPassantTarget; // only active player can cap en passant
+            else Caps &= board.ActivePlayer.All;
 
             return Moves | Caps;
         }
