@@ -16,6 +16,7 @@
             string[] RankPlacement = Field.Split('/');
             BoardAddress Location;
             int File;
+            Pieces = new PiecePositions();
             for (int rank = 0; rank < 8; rank++) {
                 File = 0;
                 foreach (char c in RankPlacement[rank]) {
