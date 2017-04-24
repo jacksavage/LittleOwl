@@ -82,8 +82,8 @@
             /// update the draw counter ///
             bool PawnMoved = move.MoveType < PieceMoveType.Knight;
             bool CaptureOccured = (move.To.Position & (board.InactivePlayer.All | board.EnPassantTarget)) != 0;
-            if (PawnMoved || CaptureOccured) Result.HalfMoveClock = 100; // reset
-            else Result.HalfMoveClock = (byte)(board.HalfMoveClock - 1); // decrement
+            if (PawnMoved || CaptureOccured) Result.HalfMoveClock = 0; // reset
+            else Result.HalfMoveClock = (byte)(board.HalfMoveClock + 1); // increment
 
             /// check for en passant target ///
             if (PawnMoved && (move.From.Position & Masks.Ranks27) != 0) {

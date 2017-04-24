@@ -48,7 +48,7 @@
             // is the active player in draw?
             private bool InDraw {
                 get {
-                    if (Board.HalfMoveClock < 1) return true; // half move clock ran out
+                    if (Board.HalfMoveClock >= 100) return true; // half move clock ran out
                     if (InsufficientMaterial) return true; // insufficient material
                     if (MoveRepetitionOccurred) return true; // move repetition
                     if (MoveGen.MoveMap(Board, true) == 0) return true; // stalemate
