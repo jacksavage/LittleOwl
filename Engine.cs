@@ -18,9 +18,10 @@
 
             // assign engine's past moves to the board and search for the best move
             Board.PastMoves = PastMoves;
-            Move Move = Searcher.Search(Board, Depth, QuiescentDepth, Alpha, Beta, MoveTimeLimit);
+            MoveGen.MoveBoardPair Mbp = Searcher.Search(Board, Depth, QuiescentDepth, Alpha, Beta, MoveTimeLimit);
+            LastBoard = Mbp.Board;
 
-            return Move.ToString();
+            return Mbp.Move.ToString();
         }
 
         // apply a move to a given board

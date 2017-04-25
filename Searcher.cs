@@ -11,7 +11,7 @@
         }
 
         // perform a minimax search from the current board to try and select the best move
-        public Move Search(Board root, int depth, int qDepth, int alpha, int beta, TimeSpan time) {
+        public MoveGen.MoveBoardPair Search(Board root, int depth, int qDepth, int alpha, int beta, TimeSpan time) {
             // guards
             if (depth < 1 || qDepth < 1) throw new ArgumentException("valid depth limits are greater than zero");
             if (alpha > beta) throw new ArgumentException("alpha cannot be greater than beta");
@@ -23,17 +23,17 @@
             Node RootNode = new Node(root);
             Node.TopLevelActivePlayerWhite = root.ActiveColorWhite; // store for utility eval
 
-            Move Result = null;
+            MoveGen.MoveBoardPair Result = null;
             int Value = int.MinValue;
             int NextDepth;
 
             for (int d = 1; d <= depth; d++) { // step through depths
                 NextDepth = d - 1;
                 foreach (Node child in RootNode.Children) { // step through children
-                    if (Result == null) Result = child.LastMove; // default to first move
+                    if (Result == null) Result = new MoveGen.MoveBoardPair(child.Board, child.LastMove); // default to first move
                     if (Timeout) return Result; // return best move if timed out
                     Value = MinV(child, NextDepth, qDepth, alpha, beta); // get minimized value from new board
-                    if (Value > alpha) { alpha = Value; Result = child.LastMove; } // update alpha and best move if better val found
+                    if (Value > alpha) { alpha = Value; Result = new MoveGen.MoveBoardPair(child.Board, child.LastMove); } // update alpha and best move if better val found
                 }
             }
 
