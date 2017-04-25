@@ -61,7 +61,7 @@
                             break;
                         default: // num empty spaces
                             if (!char.IsDigit(c)) throw new ArgumentException(string.Format("invalid character \"{0}\" in piece placement field", c));
-                            File += c - '0'; // convert char to int
+                            File += c - '1'; // convert char to int
                             break;
                     }
 
