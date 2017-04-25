@@ -1,5 +1,4 @@
 ﻿namespace LittleOwl {
-    using System;
     using System.Collections.Generic;
 
     internal static class MoveGen {
@@ -474,7 +473,7 @@
         // container for the move and the resulting board since the Board is already being generated
         // to check that the active player is not moving into check (removes need for regerenation by
         // the Searcher
-        public struct MoveBoardPair {
+        public class MoveBoardPair {
             public MoveBoardPair(Board board, Move move) {
                 this.Board = board;
                 this.Move = move;
