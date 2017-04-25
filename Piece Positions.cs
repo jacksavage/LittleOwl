@@ -77,7 +77,7 @@ namespace LittleOwl {
                     Parent._Pawns = value | (Parent._Pawns & ~_All); // update the pawn board
                     _All |= value; // add back new pawns to all
                 }
-            } // todo setters should update all
+            }
             public ulong Knights {
                 get { return _All & Parent.Knights; }
                 set {
@@ -110,7 +110,7 @@ namespace LittleOwl {
                 set {
                     _All &= ~Queens;
                     if ((_All & value) != 0) throw new ArgumentException("tried to put ontop of an existing one");
-                    Parent.Queens = value | (Parent.Queens & ~_All);
+                    Parent._Queens = value | (Parent._Queens & ~_All);
                     _All |= value;
                 }
             }
